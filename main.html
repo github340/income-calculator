@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Income Calendar</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .calendar {
+        width: 600px;
+        margin: 50px;
+      }
+      .header-calendar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .month-year {
+        font-size: 35px;
+      }
+      .nav {
+        display: flex;
+        border: 1px solid gray;
+        border-radius: 5px;
+      }
+      .nav-btn {
+        width: 25px;
+        height: 30px;
+        border: none;
+        font-size: 16px;
+        line-height: 34px;
+        background: transparent;
+        cursor: pointer;
+      }
+      .btn-today {
+        width: 75px;
+        border-left: 1px solid gray;
+        border-right: 1px solid gray;
+      }
+      .day-container {
+        display: flex;
+        margin: 25px 0 10px;
+      }
+      .day {
+        width: calc(100% / 7);
+        text-align: center;
+      }
+      .dates {
+        display: flex;
+        flex-flow: row wrap;
+        height: 500px;
+        border-top: 1px solid gray;
+        border-right: 1px solid gray;
+      }
+      .date {
+        width: calc(100% / 7);
+        padding: 15px;
+        text-align: right;
+        border-bottom: 1px solid gray;
+        border-left: 1px solid gray;
+      }
+      .day:nth-child(7n + 1),
+      .date:nth-child(7n + 1) {
+        color: rgb(245, 72, 72);
+      }
+      .day:nth-child(7n),
+      .date:nth-child(7n) {
+        color: rgb(71, 71, 255);
+      }
+      .other {
+        opacity: 0.3;
+      }
+      .today {
+        position: relative;
+        color: white;
+      }
+      .today::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: -1;
+        display: block;
+        width: 30px;
+        height: 30px;
+        background-color: peru;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        content: "";
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calendar">
+      <div class="header-calendar">
+        <div class="month-year"></div>
+        <div class="nav">
+          <button class="nav-btn btn-prev" onclick="prevMonth()">&lt;</button>
+          <button class="nav-btn btn-today" onclick="thisMonth()">Today</button>
+          <button class="nav-btn btn-next" onclick="nextMonth()">&gt;</button>
+        </div>
+      </div>
+      <div class="main-calendar">
+        <div class="day-container">
+          <div class="day">Sun</div>
+          <div class="day">Mon</div>
+          <div class="day">Tue</div>
+          <div class="day">Wed</div>
+          <div class="day">Thu</div>
+          <div class="day">Fri</div>
+          <div class="day">Sat</div>
+        </div>
+        <div class="dates"></div>
+        <div class="totalHours"></div>
+        <div class="totalIncome"></div>
+      </div>
+    </div>
+    <!-- <div class="nav">
+      <button>←</button>
+      <h1>November 2021</h1>
+      <button>→</button>
+    </div>
+    <div class="calendar">
+      <div class="week">
+        <div class="day">
+          <span class="date">1</span>
+          <span class="totalHours">8hrs</span>
+          <span class="totalIncome">$100</span>
+        </div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+      </div>
+      <div class="week">
+        <div class="day">
+          <span class="date">1</span>
+          <span class="totalHours">8hrs</span>
+          <span class="totalIncome">$100</span>
+        </div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+      </div>
+      <div class="week">
+        <div class="day">
+          <span class="date">1</span>
+          <span class="totalHours">8hrs</span>
+          <span class="totalIncome">$100</span>
+        </div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+        <div class="day"></div>
+      </div>
+    </div> -->
+    <script>
+      // Date 객체 생성
+      let date = new Date();
+
+      const calendar = () => {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        // month-year header
+        document.querySelector(".month-year").textContent = `${
+          month + 1
+        }월 ${year}년`;
+
+        // 지난 달 마지막 Date, 이번달 마지막 Date
+        const prevLast = new Date(year, month, 0);
+        const thisLast = new Date(year, month + 1, 0);
+
+        const prevLastDate = prevLast.getDate();
+        const prevLastDay = prevLast.getDay();
+        const thisLastDate = thisLast.getDate();
+        const thisLastDay = thisLast.getDay();
+
+        // Dates 기본배열
+        const prevDates = [];
+        const thisDates = [...Array(thisLastDate + 1).keys()].slice(1);
+        const nextDates = [];
+
+        // prevDates 계산
+        if (prevLastDay !== 6) {
+          for (let i = 0; i < prevLastDay + 1; i++) {
+            prevDates.unshift(prevLastDate - i);
+          }
+        }
+        // nextDates 계산
+        for (let i = 0; i < 7 - thisLastDay; i++) {
+          nextDates.push(i);
+        }
+
+        // Dates 합치기
+        const dates = prevDates.concat(thisDates, nextDates);
+
+        // Dates 정리
+        const firstDateIndex = dates.indexOf(1);
+        const lastDateIndex = dates.lastIndexOf(thisLastDate);
+        dates.forEach((date, i) => {
+          const condition =
+            i >= firstDateIndex && i < lastDateIndex + 1 ? "this" : "other";
+
+          dates[
+            i
+          ] = `<div class="date"><span class="${condition}">${date}</span></div>`;
+        });
+
+        // Dates 그리기
+        document.querySelector(".dates").innerHTML = dates.join("");
+
+        const today = new Date();
+        if (month === today.getMonth() && year === today.getFullYear()) {
+          for (let date of document.querySelectorAll(".this")) {
+            if (+date.innerText === today.getDate()) {
+              date.classList.add("today");
+              break;
+            }
+          }
+        }
+      };
+
+      calendar();
+
+      const prevMonth = () => {
+        date.setDate(1);
+        date.setMonth(date.getMonth() - 1);
+        calendar();
+      };
+
+      const nextMonth = () => {
+        date.setDate(1);
+        date.setMonth(date.getMonth() + 1);
+        calendar();
+      };
+
+      const thisMonth = () => {
+        date = new Date();
+        calendar();
+      };
+    </script>
+  </body>
+</html>
