@@ -6,9 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dom</title>
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: Georgia, "Times New Roman", Times, serif;
+        box-sizing: border-box;
+      }
+      .calendar-header {
+        display: flex;
+        padding: 15px;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .btn-prev {
+        width: 30px;
+        height: 30px;
+        border: none;
+        font-size: 15px;
+        cursor: pointer;
+        margin: 0 10px;
+      }
+      .btn-next {
+        width: 30px;
+        height: 30px;
+        border: none;
+        font-size: 15px;
+        cursor: pointer;
+        margin: 0 10px;
+      }
+      .calendar-days {
+        display: flex;
+        margin: 25px 0 10px;
+      }
       .day {
-        display: inline-block;
-        width: 100px;
+        width: calc(100% / 7);
+        text-align: center;
       }
       .sun {
         color: red;
@@ -19,43 +54,61 @@
       .week {
         display: flex;
       }
+      .calendar-dates {
+        border-top: 2px solid gray;
+        border-right: 2px solid gray;
+      }
       .date {
         width: 100px;
         height: 100px;
-        border: 1px solid gray;
+        text-align: right;
+        padding: 15px;
+        border-bottom: 2px solid gray;
+        border-left: 2px solid gray;
       }
     </style>
   </head>
   <body>
-    <h1 id="month">00월</h1>
-    <div class="calendar-days">
-      <!-- <span class="day sun">Sun</span>
-      <span class="day">Mon</span>
-      <span class="day">Tue</span>
-      <span class="day">Wed</span>
-      <span class="day">Thu</span>
-      <span class="day">Fri</span>
-      <span class="day sat">Sat</span> -->
-    </div>
-    <div class="calendar-dates">
-      <!-- <div class="week">
-        <div class="date sun">1</div>
-        <div class="date">2</div>
-        <div class="date">3</div>
-        <div class="date">4</div>
-        <div class="date">5</div>
-        <div class="date">6</div>
-        <div class="date sat">7</div>
+    <div class="calendar">
+      <div class="calendar-header">
+        <div class="btn">
+          <button class="btn-prev">&larr;</button>
+        </div>
+        <h1 id="month">00월</h1>
+        <div class="btn">
+          <button class="btn-next">&rarr;</button>
+        </div>
       </div>
-      <div class="week">
-        <div class="date sun">1</div>
-        <div class="date">2</div>
-        <div class="date">3</div>
-        <div class="date">4</div>
-        <div class="date">5</div>
-        <div class="date">6</div>
-        <div class="date sat">7</div>
-      </div> -->
+
+      <div class="calendar-days">
+        <!-- <span class="day sun">Sun</span>
+        <span class="day">Mon</span>
+        <span class="day">Tue</span>
+        <span class="day">Wed</span>
+        <span class="day">Thu</span>
+        <span class="day">Fri</span>
+        <span class="day sat">Sat</span> -->
+      </div>
+      <div class="calendar-dates">
+        <!-- <div class="week">
+          <div class="date sun">1</div>
+          <div class="date">2</div>
+          <div class="date">3</div>
+          <div class="date">4</div>
+          <div class="date">5</div>
+          <div class="date">6</div>
+          <div class="date sat">7</div>
+        </div>
+        <div class="week">
+          <div class="date sun">1</div>
+          <div class="date">2</div>
+          <div class="date">3</div>
+          <div class="date">4</div>
+          <div class="date">5</div>
+          <div class="date">6</div>
+          <div class="date sat">7</div>
+        </div> -->
+      </div>
     </div>
 
     <script>
